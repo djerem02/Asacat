@@ -33,6 +33,8 @@ public class ObjectifyHelper implements ServletContextListener {
     public static void register() {
         ObjectifyService.register(Profil.class);
         ObjectifyService.register(Sprint.class);
+        ObjectifyService.register(Projet.class);
+        ObjectifyService.register(UserStory.class);
 
     }
 

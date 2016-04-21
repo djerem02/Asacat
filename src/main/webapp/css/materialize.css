@@ -7432,7 +7432,7 @@ nav .input-field {
 
 nav .input-field input {
   /*height: 100%;*/
-  font-size: 1.2rem;
+  /*font-size: 1.2rem;*/
   border: none;
   padding-left: 2rem;
 }
@@ -8703,7 +8703,7 @@ textarea.materialize-textarea {
   border-radius: 0;
   outline: none;
   height: 3rem;
-  width: 100%;
+  /*width: 100%;*/
   font-size: 1rem;
   margin: 0 0 15px 0;
   padding: 0;
@@ -9562,7 +9562,7 @@ select:disabled {
   right: 0;
   left: 0;
   bottom: 0;
-  width: 100%;
+  /*width: 100%;*/
   margin: 0;
   padding: 0;
   font-size: 20px;
