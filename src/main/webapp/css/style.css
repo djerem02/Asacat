@@ -10,3 +10,7 @@ body{color:blueviolet;}
     padding: 2em;
     border-right: solid 0.5em grey;
 }
+
+ul#taskheader li{
+    display: inline-block;
+}

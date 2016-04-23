@@ -4,6 +4,7 @@
 <%@ page import="m1.projet3.Sprint" %>
 <%@ page import="java.util.List" %>
 <%@ page import="m1.projet3.Projet" %>
+<%@ page import="m1.projet3.Tache" %>
 <%@ page import="com.googlecode.objectify.Objectify" %>
 <%@ page import="com.google.appengine.api.datastore.DatastoreService" %>
 <%@ page import="com.google.appengine.api.datastore.DatastoreServiceFactory" %>
@@ -18,7 +19,6 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<html>
 <head>
     <title>Bienvenue</title>
     <!--<link rel="stylesheet" href="../css/bootstrap.min.css">
@@ -60,9 +60,9 @@
     <%  String nom_du_projet=request.getParameter("projet_nom");
 
         //Récuperation 1ere
-        /*String nom_du_sprint=request.getParameter("sprint_nom");
+        String nom_du_sprint=request.getParameter("sprint_nom");
         String valeur_du_sprint=request.getParameter("sprint_valeur");
-        String etat_du_sprint=request.getParameter("sprint_etat");*/
+        String etat_du_sprint=request.getParameter("sprint_etat");
 
         int scount=1;
         int ucount=1;
@@ -87,61 +87,95 @@
             for(s=1;s<=scount;s++){
 
         %>
-
-
-
-        <!--<li>
-
-            <div class="collapsible-header"><i class="material-icons">filter_drama</i><h2>Sprint en cours </h2><a href="sprint?id=<%/*sprint.id*/%>"><%/* sprint.nom  */ %></a></div>
-            <div class="collapsible-body"><%/* sprint.etat  */ %><%/* sprint.valeur   */%><%/* sprint.userstory  */ %></div>
-        </li>-->
         <li>
-            <div class="collapsible-header"><i class="material-icons">place</i><h3>Sprint n°<%=s%> </h3></div>
+            <div class="collapsible-header">
+                <i class="material-icons">place</i>
+                <h3>Sprint n°<%=s%>: <%=nom_du_sprint%><span style="float: right;"><%=valeur_du_sprint%></span> </h3>
+            </div>
             <div class="collapsible-body">
                 <% Integer u=0;
-
                     for(u=1;u<=ucount;u++){%>
                 <div class="userstory" style="display: inline-block;border: solid 1px darkgrey;" >
                     <h4>User Story n°<%=u%></h4>
-                    <table>
-                    <% Integer t;
+                        <ul class="collapsible" data-collapsible="accordion">
+                        <% Integer t;
                         for(t=1;t<=tcount;t++){%>
-                            <tr style="border: solid 1px dimgrey;">
-                                <td id="tasks<%=s%>u<%=u%>t<%=t%>">Tâche n°<%=t%></td>
-                                <td><a>Edit</a></td>
-                                <td><!-- Switch -->
-                                    <div class="switch">
-                                        <label>
-                                            <input type="checkbox">
-                                            <span class="lever"></span>
-                                        </label>
-                                    </div></td>
-                                <td><a><i class="material-icons">clear</i></a></td>
-                            </tr>
+                            <li>
+                                <div class="task collapsible-header" style="border: solid 1px dimgrey;" id="tasks<%=s%>u<%=u%>t<%=t%>" >
+                                    <ul id="taskheader" >
+                                        <li><span id="task1" name="tache_nom" >Tâche n°<%=t%></span></li>
+                                        <li><a>Edit</a></li>
+                                        <li><div class="switch">
+                                            <label>
+                                                <input type="checkbox">
+                                                <span class="lever"></span>
+                                            </label>
+                                        </div></li>
+                                        <li><a id="clears<%=s%>u<%=u%>t<%=t%>"><i class="material-icons">clear</i></a></li>
+                                    </ul>
+                                </div>
+                                <div class="collapsible-body">
+                                    <p>Description</p>
+                                    <p>Temps estimé</p>
+                                </div>
+                            </li>
                         <%}%>
-                        <td><i class="material-icons">add_circle</i></td>
-
-                    </table>
+                        <li><a id="add"><i class="material-icons">add_circle</i></a></li>
+                    </ul> <!-- FIN LISTE TACHES -->
                 </div>
 
 
                 <%}%>
                 <i class="material-icons">add_circle</i>
-            </div>
 
         </li>
-
-
-
-        <%}
-            //Fin for sprint
-        %>
+        <%} //Fin for sprint%>
         <i class="material-icons">add</i>
     </ul>
 
 </center>
 <script>
 
+//Supprimer une tâche
+/*$('#clears<=s%>u<=u%>t<//=t%>').click(function(){
+    $('#tasks<=s%>u<=u%>t<=t%>').hide();
+
+    var id = $(this).attr('id');
+});*/
+
+/*Ajouter une tâche*/
+$('#add').click(function(){
+    /*var $idcobaye = $('tr[id^="task"]:last');
+    var num= parseInt($idcobaye.prop("id").match(/\d+/g),10)+1;
+    var $clone= $idcobaye.clone().prop('id','task'+num).find("td").val("");
+    var name= $(c).attr('name');
+
+    $idcobaye.after($clone);*/
+
+
+    /*var copie = $('.task').clone();
+    copie.attr("id",)
+    copie.insertBefore($('#add'));*/
+
+
+
+   /* var value= name.split('-');
+    name = value[0]+'-'+(parseInt(value[1])+1);
+    $(c).attr('name',name);
+    $("#task1").append(c);*/
+
+});
+
+/*Enregistrer une tache*/
+$tache_nom=$("#task1").text();
+//alert($tache_nom);
+
+/*$.get({
+    url:'TacheServlet',
+    datatype:'json',
+    data:{tache_nom:$tache_nom},
+
+})*/
 </script>
 
 </body>

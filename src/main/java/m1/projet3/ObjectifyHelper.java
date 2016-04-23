@@ -35,6 +35,7 @@ public class ObjectifyHelper implements ServletContextListener {
         ObjectifyService.register(Sprint.class);
         ObjectifyService.register(Projet.class);
         ObjectifyService.register(UserStory.class);
+        ObjectifyService.register(Tache.class);
 
     }
 
