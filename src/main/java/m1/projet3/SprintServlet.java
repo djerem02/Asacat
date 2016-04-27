@@ -27,13 +27,14 @@ public class SprintServlet extends HttpServlet {
 
         Sprint monSprint= new Sprint();
         monSprint.nom=request.getParameter("sprint_nom");
+        monSprint.valeur=request.getParameter("sprint_valeur");
+        monSprint.etat=request.getParameter("etat");
+        monSprint.userstory=request.getParameter("sprint_nbstorys");
         ObjectifyService.ofy().save().entities(monSprint).now();
 
 
 
-        //monSprint.valeur= Integer.valueOf(request.getParameter("sprint_valeur"));
-        //monSprint.etat=request.getParameter("etat");
-        //monSprint.userstory= Integer.valueOf(request.getParameter("sprint_nbstorys"));
+
 
         this.getServletContext().getRequestDispatcher("/board.jsp").forward(request,response);
         // OU response.sendRedirect("board.jsp");

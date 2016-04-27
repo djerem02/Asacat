@@ -1,5 +1,6 @@
 package m1.projet3;
 
+import com.googlecode.objectify.annotation.Cache;
 import com.googlecode.objectify.annotation.Entity;
 import com.googlecode.objectify.annotation.Id;
 import com.googlecode.objectify.annotation.Index;
@@ -9,6 +10,7 @@ import com.googlecode.objectify.annotation.Index;
  */
 
 @Entity
+@Cache
 public class UserStory {
 
     @Id
@@ -27,14 +29,14 @@ public class UserStory {
     public String etat;
 
     @Index
-    public String priorite;
+    public Integer priorite;
 
 
 
 
     public UserStory(){}
 
-    public UserStory(String nom,Integer valeur,String description,String etat,String priorite){
+    public UserStory(String nom,Integer valeur,String description,String etat,Integer priorite){
         this.nom=nom;
         this.valeur=valeur;
         this.description=description;
@@ -74,11 +76,11 @@ public class UserStory {
         this.description = description;
     }
 
-    public String getPriorite() {
+    public Integer getPriorite() {
         return priorite;
     }
 
-    public void setPriorite(String priorite) {
+    public void setPriorite(Integer priorite) {
         this.priorite = priorite;
     }
 

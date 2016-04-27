@@ -1,6 +1,7 @@
 package m1.projet3;
 
 import com.google.appengine.repackaged.com.google.common.base.Flag;
+import com.googlecode.objectify.annotation.Cache;
 import com.googlecode.objectify.annotation.Entity;
 import com.googlecode.objectify.annotation.Id;
 import com.googlecode.objectify.annotation.Index;
@@ -11,6 +12,7 @@ import com.googlecode.objectify.annotation.Index;
  */
 
 @Entity
+@Cache
 public class Profil {
 
     @Id

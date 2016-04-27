@@ -14,3 +14,7 @@ body{color:blueviolet;}
 ul#taskheader li{
     display: inline-block;
 }
+
+ul#listprojet li a{}
+ul#listprojet li .delprojet{display: none;float:right;}
+ul#listprojet li:hover .delprojet{display: inline-block;  }

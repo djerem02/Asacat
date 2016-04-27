@@ -136,31 +136,7 @@
 
 <script>
 
-    /*
-     $(document).ready(function () {
-     $("#submit").click(function(){
-     $.post(
-     'ProfilServlet.java',
-     {
-     prenom: $("#prenom").val(),
-     nom: $("#nom").val()
-     },
-     function(data){
-     if(data == 'Success'){
-     $("#resultat").html("<p>Votre Profil a été modifié avec succès !</p>");
-     }else{
-     $("#resultat").html("<p>Erreur</p>");
-     }
-
-     },
-     'text'
-     );
-
-     });
-
-     });
-
-
+/*
     function getProfil(){
         var user_nom=jQuery('#nom').val();
         jQuery.ajax({

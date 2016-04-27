@@ -80,6 +80,8 @@
             /*List<Sprint> sprints = ObjectifyService.ofy()
                     .load()
                     .type(Sprint.class)
+                    .filter("del",0)
+                    .ancestor("projets",nom_du_projet)
                     .order("nom")
                     .list();
             for(Sprint sprint:sprints){*/
@@ -177,6 +179,5 @@ $tache_nom=$("#task1").text();
 
 })*/
 </script>
-
 </body>
 </html>

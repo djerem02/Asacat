@@ -7407,7 +7407,7 @@ nav ul a {
   transition: background-color .3s;
   font-size: 1rem;
   color: #fff;
-  display: block;
+  /*display: block;*/
   padding: 0 15px;
   cursor: pointer;
 }
@@ -9809,7 +9809,7 @@ select {
 
 .side-nav a {
   color: #444;
-  display: block;
+  /*display: block;*/
   font-size: 1rem;
   height: 64px;
   line-height: 64px;

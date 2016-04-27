@@ -1,6 +1,7 @@
 package m1.projet3;
 
 import com.google.appengine.repackaged.com.google.common.base.Flag;
+import com.googlecode.objectify.annotation.Cache;
 import com.googlecode.objectify.annotation.Entity;
 import com.googlecode.objectify.annotation.Id;
 import com.googlecode.objectify.annotation.Index;
@@ -10,29 +11,33 @@ import com.googlecode.objectify.annotation.Index;
  */
 
 @Entity
+@Cache
 public class Sprint {
 
     @Id
     public Long id;
 
-    @Index
-    public Integer valeur;
 
-    @Index
+    public String valeur;
+
+
     public String etat;
 
     @Index
     public String nom;
 
-    @Index
-    public Integer userstory;
+
+    public String userstory;
+
+    public Integer del=0;
 
     public Sprint(){}
 
-    public Sprint(String nom,Integer valeur,String etat,Integer userstory){
+    public Sprint(String nom,String valeur,String etat,Integer del,String userstory){
         this.nom=nom;
         this.valeur=valeur;
         this.etat=etat;
+        this.del=del;
         this.userstory=userstory;
     }
 
@@ -44,11 +49,11 @@ public class Sprint {
         this.id = id;
     }
 
-    public Integer getValeur() {
+    public String getValeur() {
         return valeur;
     }
 
-    public void setValeur(Integer valeur) {
+    public void setValeur(String valeur) {
         this.valeur = valeur;
     }
 
@@ -68,11 +73,15 @@ public class Sprint {
         this.nom = nom;
     }
 
-    public Integer getUserstory() {
+    public Integer getDel() {return del;}
+
+    public void setDel(Integer del) {this.del = del;}
+
+    public String getUserstory() {
         return userstory;
     }
 
-    public void setUserstory(Integer userstory) {
+    public void setUserstory(String userstory) {
         this.userstory = userstory;
     }
 }

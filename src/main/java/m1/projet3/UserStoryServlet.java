@@ -23,7 +23,7 @@ public class UserStoryServlet extends HttpServlet {
         monUserStory.valeur= Integer.valueOf(request.getParameter("valeur"));
         monUserStory.description= request.getParameter("valeur");
         monUserStory.etat=request.getParameter("etat");
-        monUserStory.priorite= request.getParameter("userstory");
+        monUserStory.priorite= Integer.valueOf(request.getParameter("priorite"));
         /*Enregistrement dans le datastore*/
         ObjectifyService.ofy().save().entities(monUserStory).now();
         this.getServletContext().getRequestDispatcher("/index.jsp").forward(request,response);

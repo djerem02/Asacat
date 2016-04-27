@@ -20,9 +20,9 @@
     String user_email="";
     String projet_nom="projet_nom";
 
-    //ERRORSOURCE
-    //Key<Profil> profilKey = Key.create(Profil.class, user.getUserId());
-    //Profil monProfil = ObjectifyService.ofy().load().key(profilKey).now();
+
+    Key<Profil> profilKey = Key.create(Profil.class, user.getUserId());
+    Profil monProfil = ObjectifyService.ofy().load().key(profilKey).now();
 
     if (user != null) {
 
@@ -62,11 +62,11 @@
                 </div>
             </li>
             <li><div class="input-field col s12">
-                <select name="role">
+                <select name="role" onchange="window.location.href=this.value;">
                     <option value="" disabled selected>Rôle</option>
-                    <option value="value1">Product Owner</option>
-                    <option value="value2">Scrum Master</option>
-                    <option value="value3">Développeur</option>
+                    <option value="/board.jsp">Product Owner</option>
+                    <option value="http://www.yahoo.fr/">Scrum Master</option>
+                    <option value="http://www.commentcamarche.net/">Développeur</option>
                 </select>
             </div>
             </li>
@@ -74,29 +74,29 @@
             <li> <%
                 if (user_prenom==""){%>
                 <div class="input-field col s6">
-                    <input id="prenom" type="text" class="validate">
+                    <input id="prenom" type="text" class="validate" name="prenom">
                     <label for="prenom" data-error="wrong" data-success="right">Prénom</label>
                     <!--<i class=" registerbtn tiny material-icons " >save</i>-->
                 </div>
 
                 <%}else{%>
-                <!--<span id="prenom" class="datainfo"><%= user_prenom %></span>
+                <span id="prenom" class="datainfo"><%= user_prenom %></span>
                 <i class=" tiny material-icons editlink">mode_edit</i>
-                <i class="savebtn tiny material-icons ">save</i>-->
+                <i class="savebtn tiny material-icons ">save</i>
                 <%}%>
             </li>
 
             <li><%if (user_nom==""){%>
                 <div class="input-field col s6">
-                    <input id="nom" type="text" class="validate">
+                    <input id="nom" type="text" class="validate" name="nom">
                     <label for="nom" data-error="wrong" data-success="right">Nom</label>
                     <i class=" registerbtn tiny material-icons " >save</i>
                 </div>
 
                 <%}else{%>
-                <!--<span id="nom" class="datainfo"><%= user_nom%></span>
+                <span id="nom" class="datainfo"><%= user_nom%></span>
                 <i class=" tiny material-icons editlink">mode_edit</i>
-                <i class="savebtn tiny material-icons ">save</i>-->
+                <i class="savebtn tiny material-icons ">save</i>
                 <%}%>
             </li>
 
@@ -114,7 +114,7 @@
             <li><%if (user_telephone==""){%>
                 <div class="input-field col s6">
                     <i class="material-icons prefix">phone</i>
-                    <input id="telephone" type="tel" class="validate">
+                    <input id="telephone" type="tel" class="validate" name="phone">
                     <label for="telephone" data-error="wrong" data-success="right">Telephone</label>
                     <i class=" registerbtn tiny material-icons " >save</i>
                 </div>
@@ -129,18 +129,19 @@
                     <li>
                         <a class="collapsible-header">Projets affectés</a>
                         <div class="collapsible-body">
-                            <ul>
+                            <ul id="listprojet">
                                 <% List<Projet> projets = ObjectifyService.ofy()
                             .load()
                             .type(Projet.class)
+                            .filter("del",0)
                             .order("nom")
                             .list();
                             for(Projet projet:projets){%>
-                                <li><a href="projet?id=<%=projet.id%>"><%= projet.nom%></a></li>
+                                <li><a href="/board.jsp?projet_nom=<%=projet.nom%>"><%= projet.nom%></a><a class="delprojet"><i class=" tiny material-icons">delete</i></a></li>
                                 <%}%>
-                                <li><a href="/board.jsp?projet_nom=Projet1">Projet 1</a></li>
-                                <li><a href="/board.jsp?projet_nom=Projet2">Projet 2</a></li>
-                                <li><i class="material-icons">add_circle</i></li>
+                                <li><div id="projet"><a >Projet X</a><i class=" tiny material-icons delprojet ">delete</i></div></li>
+                                <li><a class="add_projet"><i class="material-icons">add_circle</i></a></li>
+                                <li><i class="savebtn tiny material-icons ">save</i></li>
                             </ul>
                         </div>
                     </li>
@@ -177,25 +178,35 @@
 </nav>
 
 <script>
-    // Initialize collapse button
-    $(".button-collapse").sideNav();
-    // Initialize collapsible (uncomment the line below if you use the dropdown variation)
-    $('.collapsible').collapsible();
-
     $('.button-collapse').sideNav({
-                menuWidth: 240, // Default is 240
-                edge: 'right', // Choose the horizontal origin
+                menuWidth: 300, // Default is 240
+                edge: 'left', // Choose the horizontal origin
                 closeOnClick: true // Closes side-nav on <a> clicks, useful for Angular/Meteor
             }
     );
 
-    $(document).ready(function() {
         $('select').material_select();
-    });
 
-    // Show sideNav
-    //$('.button-collapse').sideNav('show');
-    // Hide sideNav
-    $('.button-collapse').sideNav('hide');
+
+
+    /*
+    $(".savebtn").on("click", function(e){
+        e.preventDefault();
+        var elink   = $(this).prev(".editlink");
+        var dataset = elink.prev(".datainfo");
+        var newid   = dataset.attr("id");
+
+        var cinput  = "#"+newid+"-form";
+        var einput  = $(cinput);
+        var newval  = einput.attr("value");
+
+        $(this).css("display", "none");
+        einput.remove();
+        dataset.html(newval);
+
+        elink.css("display", "inline-block");
+    });
+    */
+
 </script>
 

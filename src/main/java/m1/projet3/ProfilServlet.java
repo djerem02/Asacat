@@ -19,22 +19,18 @@ import java.io.IOException;
  */
 public class ProfilServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
 
-        Profil monProfil = new Profil();
-        monProfil.prenom =request.getParameter("prenom");
-        monProfil.nom = request.getParameter("nom");
-        monProfil.role=request.getParameter("role");
-        monProfil.phone=request.getParameter("phone");
-        ObjectifyService.ofy().save().entities(monProfil).now();
-        this.getServletContext().getRequestDispatcher("/index.jsp").forward(request,response);
     }
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        String nom= request.getParameter("nom");
-        /*JsonArrayBuilder arrayBuilder = Json.createArrayBuilder();
-        JsonObjectBuilder objectBuilder=Json.createObjectBuilder();
-        objectBuilder.add("id",)*/
+        DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
 
+        Profil monProfil = new Profil();
+        //monProfil.prenom =request.getParameter("profil_prenom");
+        monProfil.nom = request.getParameter("profil_nom");
+        //monProfil.role=request.getParameter("profil_role");
+        //monProfil.phone=request.getParameter("profil_phone");
+        monProfil.email=request.getParameter("profil_email");
+        ObjectifyService.ofy().save().entities(monProfil).now();
     }
 }
