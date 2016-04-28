@@ -18,7 +18,7 @@ public class Projet {
     public String nom;
 
     @Index
-    public Integer del=0;
+    public Integer del;
 
     public Projet(){}
 

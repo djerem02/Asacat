@@ -1,14 +1,12 @@
-<%@ page import="m1.projet3.Profil" %>
 <%@ page import="com.googlecode.objectify.Key" %>
 <%@ page import="com.google.appengine.api.users.User" %>
-<%@ page import="m1.projet3.Sprint" %>
 <%@ page import="java.util.List" %>
-<%@ page import="m1.projet3.Projet" %>
-<%@ page import="m1.projet3.Tache" %>
 <%@ page import="com.googlecode.objectify.Objectify" %>
 <%@ page import="com.google.appengine.api.datastore.DatastoreService" %>
 <%@ page import="com.google.appengine.api.datastore.DatastoreServiceFactory" %>
 <%@ page import="com.google.appengine.repackaged.com.google.common.base.Flag" %>
+<%@ page import="m1.projet3.*" %>
+<%@ page import="javax.jws.soap.SOAPBinding" %>
 <%--
   Created by IntelliJ IDEA.
   User: Jérémy
@@ -64,6 +62,9 @@
         String valeur_du_sprint=request.getParameter("sprint_valeur");
         String etat_du_sprint=request.getParameter("sprint_etat");
 
+
+
+
         int scount=1;
         int ucount=1;
         int tcount=1;
@@ -77,33 +78,52 @@
     <h1><%= nom_du_projet%></h1>
     <ul class="collapsible popout" data-collapsible="accordion">
         <%
-            /*List<Sprint> sprints = ObjectifyService.ofy()
+            List<Sprint> sprints = ObjectifyService.ofy()
                     .load()
                     .type(Sprint.class)
                     .filter("del",0)
-                    .ancestor("projets",nom_du_projet)
+
+                    /*.ancestor("projet",nom_du_projet)*/
                     .order("nom")
                     .list();
-            for(Sprint sprint:sprints){*/
-            Integer s;
-            for(s=1;s<=scount;s++){
+            for(Sprint sprint :sprints){
+            /*Integer s;
+            for(s=1;s<=scount;s++){*/
 
         %>
         <li>
             <div class="collapsible-header">
                 <i class="material-icons">place</i>
-                <h3>Sprint n°<%=s%>: <%=nom_du_sprint%><span style="float: right;"><%=valeur_du_sprint%></span> </h3>
+                <h3>Sprint n°: <%=nom_du_sprint%><span style="float: right;"><%=valeur_du_sprint%></span> </h3>
             </div>
             <div class="collapsible-body">
-                <% Integer u=0;
+                <% /*List<UserStory> userStories = ObjectifyService.ofy()
+                    .load()
+                    .type(UserStory.class)
+                    .filter("del",0)
+                    .ancestor("nom",sprint[s])
+                    .order("priorite")
+                    .list();
+            for(UserStory userStory: userStories){*/
+
+                    Integer u=0;
                     for(u=1;u<=ucount;u++){%>
                 <div class="userstory" style="display: inline-block;border: solid 1px darkgrey;" >
                     <h4>User Story n°<%=u%></h4>
                         <ul class="collapsible" data-collapsible="accordion">
-                        <% Integer t;
+                        <%/* List<Tache> taches = ObjectifyService.ofy()
+                            .load()
+                            .type(Tache.class)
+                            .filter("del",0)
+                            .ancestor("nom",userStory[u])
+                            .order("priorite")
+                            .list();
+
+                            for(Tache tache: taches){*/
+                            Integer t;
                         for(t=1;t<=tcount;t++){%>
                             <li>
-                                <div class="task collapsible-header" style="border: solid 1px dimgrey;" id="tasks<%=s%>u<%=u%>t<%=t%>" >
+                                <div class="task collapsible-header" style="border: solid 1px dimgrey;" id="tasksu<%=u%>t<%=t%>" >
                                     <ul id="taskheader" >
                                         <li><span id="task1" name="tache_nom" >Tâche n°<%=t%></span></li>
                                         <li><a>Edit</a></li>
@@ -113,7 +133,7 @@
                                                 <span class="lever"></span>
                                             </label>
                                         </div></li>
-                                        <li><a id="clears<%=s%>u<%=u%>t<%=t%>"><i class="material-icons">clear</i></a></li>
+                                        <li><a id="clearsu<%=u%>t<%=t%>"><i class="material-icons">clear</i></a></li>
                                     </ul>
                                 </div>
                                 <div class="collapsible-body">

@@ -23,6 +23,7 @@ public class SprintServlet extends HttpServlet {
 
         Projet monProjet = new Projet();
         monProjet.nom=request.getParameter("projet_nom");
+        monProjet.del=0;
         ObjectifyService.ofy().save().entities(monProjet).now();
 
         Sprint monSprint= new Sprint();
@@ -30,6 +31,8 @@ public class SprintServlet extends HttpServlet {
         monSprint.valeur=request.getParameter("sprint_valeur");
         monSprint.etat=request.getParameter("etat");
         monSprint.userstory=request.getParameter("sprint_nbstorys");
+        monSprint.del=0;
+        monSprint.etat="À faire";
         ObjectifyService.ofy().save().entities(monSprint).now();
 
 

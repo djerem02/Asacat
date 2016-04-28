@@ -1,10 +1,8 @@
 package m1.projet3;
 
 import com.google.appengine.repackaged.com.google.common.base.Flag;
-import com.googlecode.objectify.annotation.Cache;
-import com.googlecode.objectify.annotation.Entity;
-import com.googlecode.objectify.annotation.Id;
-import com.googlecode.objectify.annotation.Index;
+import com.googlecode.objectify.Key;
+import com.googlecode.objectify.annotation.*;
 
 /**
  * Created by Jérémy on 06/04/2016.
@@ -13,6 +11,7 @@ import com.googlecode.objectify.annotation.Index;
 @Entity
 @Cache
 public class Sprint {
+
 
     @Id
     public Long id;
@@ -29,7 +28,8 @@ public class Sprint {
 
     public String userstory;
 
-    public Integer del=0;
+    @Index
+    public Integer del;
 
     public Sprint(){}
 
