@@ -22,8 +22,8 @@ public class Projet {
 
     public Projet(){}
 
-    public Projet(Long id, String nom,Integer del) {
-        this.id = id;
+    public Projet(Long idp, String nom,Integer del) {
+        this.id = idp;
         this.nom = nom;
         this.del= del;
     }

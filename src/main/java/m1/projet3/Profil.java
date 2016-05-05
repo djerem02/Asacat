@@ -16,7 +16,7 @@ import com.googlecode.objectify.annotation.Index;
 public class Profil {
 
     @Id
-    public Long id;
+    public String id;
 
     @Index
     public String nom;
@@ -33,20 +33,24 @@ public class Profil {
     @Index
     public String email;
 
-    @Index
-    public String mdp;
 
     public Profil(){}
 
-    public Profil(String nom){
+    public Profil(String id, String nom, String prenom, String role, String phone, String email) {
+        this.id = id;
         this.nom = nom;
+        this.prenom = prenom;
+        this.role = role;
+        this.phone = phone;
+        this.email = email;
     }
 
-    public Long getId() {
+
+    public String getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(String id) {
         this.id = id;
     }
 
@@ -86,11 +90,5 @@ public class Profil {
         this.email = email;
     }
 
-    public String getMdp() {
-        return mdp;
-    }
 
-    public void setMdp(String mdp) {
-        this.mdp = mdp;
-    }
 }

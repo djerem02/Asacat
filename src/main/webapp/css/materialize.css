@@ -3194,9 +3194,9 @@ nav ul a span.badge {
 
 .progress {
   position: relative;
-  height: 4px;
+  height: 20px;
   display: block;
-  width: 100%;
+  width: 70%;
   background-color: #acece6;
   border-radius: 2px;
   margin: 0.5rem 0 1rem 0;
@@ -8501,8 +8501,8 @@ a.waves-effect .waves-ripple {
 .collapsible-header {
   display: block;
   cursor: pointer;
-  min-height: 3rem;
-  line-height: 3rem;
+  min-height: 4rem;
+  line-height: 4rem;
   padding: 0 1rem;
   background-color: #fff;
   border-bottom: 1px solid #ddd;
@@ -9473,7 +9473,7 @@ input[type=checkbox]:not(:disabled) ~ .lever:active:after {
 }
 
 select {
-  display: none;
+  /*display: none;*/
 }
 
 select.browser-default {

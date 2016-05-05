@@ -7,6 +7,7 @@
 <%@ page import="com.google.appengine.repackaged.com.google.common.base.Flag" %>
 <%@ page import="m1.projet3.*" %>
 <%@ page import="javax.jws.soap.SOAPBinding" %>
+<%@ page import="java.util.Random" %>
 <%--
   Created by IntelliJ IDEA.
   User: Jérémy
@@ -33,39 +34,31 @@
     <script src="../js/bootstrap.min.js"></script>
     <script src="../js/materialize.min.js"></script>
     <script src="../js/profile.js"></script>
-
-    <style>
-        /*header, main, footer {
-            padding-left: 240px;
-        }
-
-        @media only screen and (max-width : 992px) {
-            header, main, footer {
-                padding-left: 0;
-            }
-        }*/
-
-
-    </style>
 </head>
 <body>
 
 <%@include file="nav.jsp" %>
 
 
-
 <center>
     <%  String nom_du_projet=request.getParameter("projet_nom");
 
         //Récuperation 1ere
-        String nom_du_sprint=request.getParameter("sprint_nom");
-        String valeur_du_sprint=request.getParameter("sprint_valeur");
+        //String nom_du_sprint=request.getParameter("sprint_nom");
+        //String valeur_du_sprint=request.getParameter("sprint_valeur");
         String etat_du_sprint=request.getParameter("sprint_etat");
 
 
+        //Créer une clef
+        Key<Projet> parent = Key.create(Projet.class,nom_du_projet);
+        //Charger une entité par sa clef
+        //Projet monProjet = ObjectifyService.ofy().load().key(parent).now();
+        Projet monProjet = ObjectifyService.ofy().load().key(parent).now();
+        //Créer une clef
+        //Key<Sprint> sprintKey = Key.create(Sprint.class,user.getUserId());
+        //Charger une entité par sa clef
+        //Sprint monSprint = ObjectifyService.ofy().load().key(sprintKey).now();
 
-
-        int scount=1;
         int ucount=1;
         int tcount=1;
 
@@ -76,25 +69,31 @@
         }
     %>
     <h1><%= nom_du_projet%></h1>
-    <ul class="collapsible popout" data-collapsible="accordion">
+    <ul class="collapsible popout" data-collapsible="accordion" id="sprint_list">
         <%
+            Random rd= new Random();
+
+
             List<Sprint> sprints = ObjectifyService.ofy()
                     .load()
                     .type(Sprint.class)
                     .filter("del",0)
-
-                    /*.ancestor("projet",nom_du_projet)*/
+                    /*.ancestor(parent)*/
                     .order("nom")
                     .list();
             for(Sprint sprint :sprints){
-            /*Integer s;
+                int progression = rd.nextInt(100)+1;
+                /*Integer s;
             for(s=1;s<=scount;s++){*/
 
         %>
-        <li>
+        <li >
             <div class="collapsible-header">
                 <i class="material-icons">place</i>
-                <h3>Sprint n°: <%=nom_du_sprint%><span style="float: right;"><%=valeur_du_sprint%></span> </h3>
+                <h3 id="<%= sprint.id%>">Sprint n°<%= sprint.id%>: <%= sprint.nom%><span style="float: left;"><%= sprint.valeur%></span><a id="delete"><i class=" tiny material-icons md-dark md-inactive right rouge" >clear</i></a></h3>
+                <div class="progress">
+                    <div class="determinate" style="width:<%= progression %>%"></div> // nombre taches done/nombre total de taches(nombre de tachesn ayant l'id ancetre et etat done/nolbres de taches yaant l'ancetre)
+                </div>
             </div>
             <div class="collapsible-body">
                 <% /*List<UserStory> userStories = ObjectifyService.ofy()
@@ -123,37 +122,47 @@
                             Integer t;
                         for(t=1;t<=tcount;t++){%>
                             <li>
-                                <div class="task collapsible-header" style="border: solid 1px dimgrey;" id="tasksu<%=u%>t<%=t%>" >
-                                    <ul id="taskheader" >
-                                        <li><span id="task1" name="tache_nom" >Tâche n°<%=t%></span></li>
-                                        <li><a>Edit</a></li>
-                                        <li><div class="switch">
-                                            <label>
-                                                <input type="checkbox">
-                                                <span class="lever"></span>
-                                            </label>
-                                        </div></li>
-                                        <li><a id="clearsu<%=u%>t<%=t%>"><i class="material-icons">clear</i></a></li>
-                                    </ul>
+                                <div class="task collapsible-header">
+                                        <h5 ><span id="task1" name="tache_nom" >Tâche n°<%=t%></span>
+                                                <span class="switch">
+                                                    <label>
+                                                        <input type="checkbox">
+                                                        <span class="lever"></span>
+                                                    </label>
+                                                </span>
+                                                <span class="right">
+                                                <i class="material-icons md-dark md-inactive pointer bleu ">mode_edit</i>
+                                                <i class="material-icons md-dark md-inactive pointer rouge">clear</i>
+
+                                                </span>
+                                        </h5>
                                 </div>
                                 <div class="collapsible-body">
-                                    <p>Description</p>
+                                    <div class="input-field col s12">
+                                        <textarea id="description" class="materialize-textarea" length="120"></textarea>
+                                        <label for="description">Description</label>
+                                        </div>
+                                    <input type="date" class="datepicker">
                                     <p>Temps estimé</p>
+
                                 </div>
                             </li>
                         <%}%>
-                        <li><a id="add"><i class="material-icons">add_circle</i></a></li>
+                        <li><i id="addtache" class="material-icons md-dark md-inactive md-24 pointer vert">add</i></li>
                     </ul> <!-- FIN LISTE TACHES -->
                 </div>
 
 
                 <%}%>
-                <i class="material-icons">add_circle</i>
+                <i id="adduserstory" class="material-icons md-dark md-inactive md-36 pointer vert">add</i>
 
         </li>
+
         <%} //Fin for sprint%>
-        <i class="material-icons">add</i>
+
     </ul>
+    <i id="newsprint" class="material-icons md-dark md-inactive md-48 pointer vert">add</i>
+    <i  id="addsprint" class="material-icons md-dark md-inactive pointer bleu md-48 " style="display: none;">send</i>
 
 </center>
 <script>
@@ -165,8 +174,58 @@
     var id = $(this).attr('id');
 });*/
 
+/*Créer un Sprint */
+$('#newsprint').click(function(){
+    $('#sprint_list').append($('<li><div class="collapsible-header">' +
+            '<i class="material-icons">place</i> <h3>Sprint n°Y: <input id="addsprint_nom"type="texte" style="width: 4em;" placeholder="Nom"><input id="addsprint_valeur" style="float: left;width: 45px;" placeholder="Valeur"><a id="delete"><i class=" tiny material-icons md-dark md-inactive right rouge" >clear</i></a>' +
+            //'<div class="progress"> <div class="determinate" style="width:0%"></div></div>' +
+            '</h3>'+
+            '</div>' +
+            '<!--<div class="collapsible-body"><div class="userstory" style="display: inline-block;border: solid 1px darkgrey;" >'+
+            '<h4>User Story n°Y</h4><ul class="collapsible" data-collapsible="accordion"> '+
+            '<li><div class="task collapsible-header"> ' +
+            '<h5 ><span id="task1" name="tache_nom" >Tâche n°</span>'+
+                                                '<span class="switch"><label> <input type="checkbox"> <span class="lever"></span> </label>'+
+                                                '</span><span class="right"> <i class="material-icons md-dark md-inactive pointer bleu ">mode_edit</i> <i class="material-icons md-dark md-inactive pointer rouge">clear</i> </span>'+
+            '</h5></div>'+
+            '<div class="collapsible-body"> <div class="input-field col s12"> <textarea id="description" class="materialize-textarea" length="120"></textarea> <label for="description">Description</label> </div> <input type="date" class="datepicker"> <p>Temps estimé</p> </div> </li>'+
+            '</div></li>-->'));
+    $(this).css("display", "none");
+    $('#addsprint').css("display","block");
+})
+/*Valider et Enregister un Sprint*/
+/*Valider  input to span*/
+/*Enregistrer BDD via Servlet*/
+$('#addsprint').click(function(){
+    alert('coucou');
+    event.preventDefault();
+    $addsprint_nom=$('#addsprint_nom').val()
+    $addsprint_valeur=$('#addsprint_valeur').val()
+
+    alert($addsprint_valeur);
+    alert($addsprint_nom);
+    $.get({
+        url:'AddServlet',
+        datatype:'json',
+        data:{addsprint_nom:$addsprint_nom,addsprint_valeur:$addsprint_valeur},
+
+    })
+
+    $(this).css("display", "none");
+    $('#newsprint').css("display","block");
+    Materialize.toast($addsprint_nom+" crée !", 3000);
+
+
+});
+
+
+$('#adduserstory').click(function(){
+    alert("UserStory Ajouté ! ");
+})
+
 /*Ajouter une tâche*/
-$('#add').click(function(){
+$('#addtache').click(function(){
+    alert("Tâche Ajoutée !")
     /*var $idcobaye = $('tr[id^="task"]:last');
     var num= parseInt($idcobaye.prop("id").match(/\d+/g),10)+1;
     var $clone= $idcobaye.clone().prop('id','task'+num).find("td").val("");
@@ -188,7 +247,7 @@ $('#add').click(function(){
 
 });
 
-/*Enregistrer une tache*/
+/*Enregistrer une tache OK*/
 $tache_nom=$("#task1").text();
 //alert($tache_nom);
 
@@ -196,6 +255,22 @@ $tache_nom=$("#task1").text();
     url:'TacheServlet',
     datatype:'json',
     data:{tache_nom:$tache_nom},
+
+})*/
+
+    /*Supprimer (Modifier del)*/
+
+
+/*
+$('#delete').click(function(event){
+    event.preventDefault();
+    $sprint_id=$("h3").attr('id');
+    console.log($sprint_id);
+    $.get({
+        url:'DelSServlet',
+        data:{sprint_id:$sprint_id},
+
+    })
 
 })*/
 </script>

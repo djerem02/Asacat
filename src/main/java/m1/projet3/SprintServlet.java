@@ -32,12 +32,8 @@ public class SprintServlet extends HttpServlet {
         monSprint.etat=request.getParameter("etat");
         monSprint.userstory=request.getParameter("sprint_nbstorys");
         monSprint.del=0;
-        monSprint.etat="À faire";
+        monSprint.etat="A faire";
         ObjectifyService.ofy().save().entities(monSprint).now();
-
-
-
-
 
         this.getServletContext().getRequestDispatcher("/board.jsp").forward(request,response);
         // OU response.sendRedirect("board.jsp");

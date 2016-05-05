@@ -1,6 +1,13 @@
 <%@ page import="com.googlecode.objectify.ObjectifyService" %>
 <%@ page import="com.google.appengine.api.users.UserServiceFactory" %>
-<%@ page import="com.google.appengine.api.users.UserService" %><%--
+<%@ page import="com.google.appengine.api.users.UserService" %>
+<%@ page import="com.google.appengine.api.datastore.DatastoreService" %>
+<%@ page import="com.google.appengine.api.datastore.DatastoreServiceFactory" %>
+<%@ page import="com.google.appengine.api.users.User" %>
+<%@ page import="com.googlecode.objectify.Key" %>
+<%@ page import="m1.projet3.Profil" %>
+<%@ page import="m1.projet3.Projet" %>
+<%@ page import="java.util.List" %><%--
   Created by IntelliJ IDEA.
   User: Jérémy
   Date: 19/04/2016
@@ -14,43 +21,32 @@
     UserService service = UserServiceFactory.getUserService();
     User user = service.getCurrentUser();
 
-    String user_prenom="";
-    String user_nom="";
-    String user_telephone="";
-    String user_email="";
     String projet_nom="projet_nom";
+    String user_id=user.getUserId();
 
-
-    Key<Profil> profilKey = Key.create(Profil.class, user.getUserId());
-    Profil monProfil = ObjectifyService.ofy().load().key(profilKey).now();
+    //Récupération Profil
+    Profil monProfil = ObjectifyService.ofy().load().type(Profil.class).id(user_id).now();
+    String user_role=monProfil.role;
+    String user_prenom=monProfil.prenom;
+    String user_nom=monProfil.nom;
+    String user_telephone=monProfil.phone;
+    String user_email=monProfil.email;
 
     if (user != null) {
 
-
-        //Créer une clef
-        Key<Projet> projetKey = Key.create(Projet.class,user.getUserId());
-        //Charger une entité par sa clef
-        Projet monProjet = ObjectifyService.ofy().load().key(projetKey).now();
-
-        //Créer une clef
-        Key<Sprint> sprintKey = Key.create(Sprint.class,user.getUserId());
-        //Charger une entité par sa clef
-        Sprint monSprint = ObjectifyService.ofy().load().key(sprintKey).now();
-
         user_email = user.getEmail();
-        //projet_nom=monProjet.getNom();
-        //user_prenom=monProfil.getPrenom();  //ERREUR
-        //user_prenom=monProfil.prenom; //ERREUR
-
 
     }
 %>
 <nav>
     <% if (user !=null){%>
-    <form action="/ProfilServlet" method="post">
-
+        <input id="user_id" type="hidden" value="<%= user_id%>">
         <ul id="slide-out" class="side-nav" style="color:grey;">
-            <li><i class="small material-icons">perm_identity</i><a href="#!">Avatar </a>
+            <div style="float: right;">
+            <i id="editprojet" class="material-icons md-36 md-dark md-inactive bleu pointer editlink">mode_edit</i>
+            <i id="saveprojet" class="material-icons md-36 md-dark md-inactive pointer bleu" style="display: none;">save</i>
+            </div>
+            <li><i class="material-icons md-dark md-inactive md-60">account_circle</i></a>
                 <div class="file-field input-field">
                     <div class="btn">
                         <span>File</span>
@@ -61,67 +57,42 @@
                     </div>
                 </div>
             </li>
-            <li><div class="input-field col s12">
-                <select name="role" onchange="window.location.href=this.value;">
-                    <option value="" disabled selected>Rôle</option>
-                    <option value="/board.jsp">Product Owner</option>
-                    <option value="http://www.yahoo.fr/">Scrum Master</option>
-                    <option value="http://www.commentcamarche.net/">Développeur</option>
+            <li><% if (user_role==null){%>
+                <!--<div class="input-field col s12">
+                <select id="datarole" > <!--onchange="window.location.href=this.value;"
+                    <option  disabled selected>Rôle</option> value="pour lien"
+                    <option >Product Owner</option>
+                    <option >Scrum Master</option>
+                    <option >Développeur</option>
                 </select>
-            </div>
-            </li>
-
-            <li> <%
-                if (user_prenom==""){%>
-                <div class="input-field col s6">
-                    <input id="prenom" type="text" class="validate" name="prenom">
-                    <label for="prenom" data-error="wrong" data-success="right">Prénom</label>
-                    <!--<i class=" registerbtn tiny material-icons " >save</i>-->
-                </div>
-
+                </div>-->
+                <span id="datarole">Rôle</span>
                 <%}else{%>
-                <span id="prenom" class="datainfo"><%= user_prenom %></span>
-                <i class=" tiny material-icons editlink">mode_edit</i>
-                <i class="savebtn tiny material-icons ">save</i>
+                <span id="datarole"><%= monProfil.role%></span>
                 <%}%>
             </li>
 
-            <li><%if (user_nom==""){%>
-                <div class="input-field col s6">
-                    <input id="nom" type="text" class="validate" name="nom">
-                    <label for="nom" data-error="wrong" data-success="right">Nom</label>
-                    <i class=" registerbtn tiny material-icons " >save</i>
-                </div>
-
+            <li><%if (user_prenom==null){%>
+                <span id="dataprenom">Prenom</span>
                 <%}else{%>
-                <span id="nom" class="datainfo"><%= user_nom%></span>
-                <i class=" tiny material-icons editlink">mode_edit</i>
-                <i class="savebtn tiny material-icons ">save</i>
+                <span id="dataprenom" ><%= monProfil.prenom %></span>
                 <%}%>
             </li>
 
-
-            <li><span id="email" class="datainfo"><%= user_email%></span>
-                <i class=" tiny material-icons editlink">mode_edit</i>
-                <i class="savebtn tiny material-icons ">save</i>
-            </li>
-            <li><div class="input-field col s6">
-                <i class="small material-icons prefix">lock</i>
-                <input type="password" id="mdp" class="validate">
-                <label for="mdp" data-error="wrong" data-success="right">Mot de passe</label>
-            </div>
-            </li>
-            <li><%if (user_telephone==""){%>
-                <div class="input-field col s6">
-                    <i class="material-icons prefix">phone</i>
-                    <input id="telephone" type="tel" class="validate" name="phone">
-                    <label for="telephone" data-error="wrong" data-success="right">Telephone</label>
-                    <i class=" registerbtn tiny material-icons " >save</i>
-                </div>
+            <li><%if (user_nom ==null){%>
+                <span id="datanom" >Nom</span>
                 <%}else{%>
-                <!--<span id="telephone" class="datainfo"><%/* user_telephone*/%></span>
-                <i class=" tiny material-icons editlink">mode_edit</i>
-                <i class="savebtn tiny material-icons ">save</i>-->
+                <span id="datanom"><%= monProfil.nom%></span>
+                <%}%>
+            </li>
+            <li>
+                <span id="datamail" ><%= user_email%></span>
+            </li>
+
+            <li><%if (user_telephone==null){%>
+                <span id="dataphone">Telephone</span>
+                <%}else{%>
+                <span id="dataphone"><%= user_telephone%></span>
                 <%}%>
             </li>
             <li class="no-padding">
@@ -129,7 +100,7 @@
                     <li>
                         <a class="collapsible-header">Projets affectés</a>
                         <div class="collapsible-body">
-                            <ul id="listprojet">
+                            <ul id="projet_list">
                                 <% List<Projet> projets = ObjectifyService.ofy()
                             .load()
                             .type(Projet.class)
@@ -137,12 +108,21 @@
                             .order("nom")
                             .list();
                             for(Projet projet:projets){%>
-                                <li><a href="/board.jsp?projet_nom=<%=projet.nom%>"><%= projet.nom%></a><a class="delprojet"><i class=" tiny material-icons">delete</i></a></li>
+                                <li><div id="<%=projet.id%>">
+                                        <a id="projet_nom" href="/board.jsp?projet_nom=<%=projet.nom%>">
+                                            <%= projet.nom%>
+                                        </a>
+                                        <a class="delprojet" id="deletep">
+                                            <i class=" tiny material-icons rouge">clear</i>
+                                        </a>
+                                    </div>
+                                </li>
                                 <%}%>
-                                <li><div id="projet"><a >Projet X</a><i class=" tiny material-icons delprojet ">delete</i></div></li>
-                                <li><a class="add_projet"><i class="material-icons">add_circle</i></a></li>
-                                <li><i class="savebtn tiny material-icons ">save</i></li>
+
                             </ul>
+                            <i id="newprojet" class="material-icons md-dark md-inactive pointer">add_circle</i>
+                            <i  id="addprojet" class="material-icons md-dark md-inactive pointer bleu md-24 pointer" style="display: none;">send</i>
+
                         </div>
                     </li>
                     <div id="resultat"></div>
@@ -151,7 +131,7 @@
         </ul><%}%>
 
         <ul class="right hide-on-med-and-down">
-            <li><a href="#!" data-activates="dropdown1"><i class="medium material-icons">settings</i></a></li>
+            <li><a href="/trash.jsp" data-activates="dropdown1"><i class="medium material-icons">delete</i></a></li>
             <ul id='dropdown1' class='dropdown-content'>
                 <li><a href="#!">First</a></li>
                 <li><a href="#!">Second</a></li>
@@ -174,7 +154,7 @@
         </ul>
         <% if (user!=null){%>
         <a href="#" data-activates="slide-out" class="button-collapse show-on-large">  <i class="medium material-icons">menu</i></a>
-    </form><%}%>
+    <%}%>
 </nav>
 
 <script>
@@ -185,28 +165,195 @@
             }
     );
 
-        $('select').material_select();
 
 
 
-    /*
-    $(".savebtn").on("click", function(e){
+
+
+    /*Modifier le profil*/
+    var newrole_val = "";
+
+    $("#editprojet").on("click", function(e){
         e.preventDefault();
-        var elink   = $(this).prev(".editlink");
-        var dataset = elink.prev(".datainfo");
-        var newid   = dataset.attr("id");
+        var datarole = $(("#datarole"));
+        var dataprenom = $(("#dataprenom"));
+        var datanom = $(("#datanom"));
+        var datamail = $(("#datamail"));
+        var dataphone = $(("#dataphone"));
 
-        var cinput  = "#"+newid+"-form";
-        var einput  = $(cinput);
-        var newval  = einput.attr("value");
+        var role_id   = datarole.attr("id");
+        var newrole_id   = role_id+"-form";
+        var prenom_id   = dataprenom.attr("id");
+        var newprenom_id   = prenom_id+"-form";
+        var nom_id   = datanom.attr("id");
+        var newnom_id   = nom_id+"-form";
+        var mail_id   = datamail.attr("id");
+        var newmail_id   = mail_id+"-form";
+        var phone_id   = dataphone.attr("id");
+        var newphone_id   = phone_id+"-form";
+
+
+        var role_val = datarole.text();
+        var prenom_val = dataprenom.text();
+        var nom_val = datanom.text();
+        var mail_val = datamail.text();
+        var phone_val = dataphone.text();
+
+        datarole.empty();
+        dataprenom.empty();
+        datanom.empty();
+        datamail.empty();
+        dataphone.empty();
+
+
+        $('select').material_select();
+        $('<div class="input-field col s12"><select id="'+newrole_id+'" selected="role_val" >'+
+                '<option  disabled selected>Rôle</option>'+
+                '<option >Product Owner</option>'+
+                '<option >Scrum Master</option>'+
+                '<option >Développeur</option>'+
+                '</select></div>').appendTo(datarole);
+        $('<input type="text" name="'+newprenom_id+'" id="'+newprenom_id+'" value="'+prenom_val+'" class="hlite">').appendTo(dataprenom);
+        $('<input type="text" name="'+newnom_id+'" id="'+newnom_id+'" value="'+nom_val+'" class="hlite">').appendTo(datanom);
+        $('<input type="text" name="'+newmail_id+'" id="'+newmail_id+'" value="'+mail_val+'" class="hlite">').appendTo(datamail);
+        $('<input type="text" name="'+newphone_id+'" id="'+newphone_id+'" value="'+phone_val+'" class="hlite">').appendTo(dataphone);
+        $(this).css("display", "none");
+        $('#saveprojet').css("display","block");
+    });
+    /*Valider & Sauvegarder*/
+    $("#saveprojet").on("click", function(e){
+        e.preventDefault();
+        $("select").change(function () {
+
+            $("select option:selected").each(function () {
+                newrole_val += $(this).text();
+                alert(newrole_val+"a");
+            });
+
+        })
+        var user_id = $(("#user_id")).val();
+        alert(user_id);
+
+        var dataprenom = $(("#dataprenom"));
+        var datarole = $(("#datarole"));
+        var datanom = $(("#datanom"));
+        var datamail = $(("#datamail"));
+        var dataphone = $(("#dataphone"));
+
+
+        var newprenom_id   = dataprenom.attr("id");
+        var newrole_id   = datarole.attr("id");
+        var newnom_id   = datanom.attr("id");
+        var newmail_id   = datamail.attr("id");
+        var newphone_id   = dataphone.attr("id");
+
+        var role_input  = "#"+newrole_id+"-form";
+        var prenom_input  = "#"+newprenom_id+"-form";
+        var nom_input  = "#"+newnom_id+"-form";
+        var mail_input  = "#"+newmail_id+"-form";
+        var phone_input  = "#"+newphone_id+"-form";
+
+        var newrole_input  = $(role_input);
+        var newprenom_input  = $(prenom_input);
+        var newnom_input  = $(nom_input);
+        var newmail_input  = $(mail_input);
+        var newphone_input  = $(phone_input);
+
+        var newrole_val  = newrole_input.val();
+        var newprenom_val  = newprenom_input.val();
+        var newnom_val  = newnom_input.val();
+        var newmail_val  = newmail_input.val();
+        var newphone_val  = newphone_input.val();
+
+        alert(newrole_val);
+        alert(newnom_val);
+
+        newrole_input.remove();
+        newprenom_input.remove();
+        newnom_input.remove();
+        newmail_input.remove();
+        newphone_input.remove();
+
+
+        datarole.html(newrole_val);
+        dataprenom.html(newprenom_val);
+        datanom.html(newnom_val);
+        datamail.html(newmail_val);
+        dataphone.html(newphone_val);
 
         $(this).css("display", "none");
-        einput.remove();
-        dataset.html(newval);
+        $('#editprojet').css("display","block");
 
-        elink.css("display", "inline-block");
+        /*Enregistrer le profil*/
+        $.get({
+            url:'ProfilServlet',
+            datatype:'json',
+            data:{user_id:user_id,profil_role:newrole_val,profil_prenom:newprenom_val,profil_nom:newnom_val,profil_email:newmail_val,profil_phone:newphone_val}, ///
+
+        })
+
     });
-    */
+
+
+
+    /*Enregistrer le Profil*/
+    $profil_nom=$("#nom").val();
+    $profil_email=$("#email").text();
+    //$profil_prenom=$("#task1").text();
+    //$profil_phone=$("#").text();
+
+
+
+    /*Créer un projet*/
+    $('#newprojet').click(function(){
+        $('#projet_list').append($('<input id="addprojet_nom">'));
+        $(this).css("display", "none");
+        $('#addprojet').css("display","block");
+    })
+    /*Valider et Enregister un Projet*/
+    /*Valider  input to span*/
+    /*Enregistrer BDD via Servlet*/
+    $('#addprojet').click(function(){
+        alert('coucou');
+        event.preventDefault();
+        $addprojet_nom=$('#addprojet_nom').val()
+
+        alert($addprojet_nom);
+        $.get({
+            url:'AddServlet',
+            datatype:'json',
+            data:{addprojet_nom:$addprojet_nom,},
+
+        })
+
+        $(this).css("display", "none");
+        $('#newprojet').css("display","block");
+        Materialize.toast($addprojet_nom+" crée !", 3000);
+
+    });
+
+    /*Supprimer un projet OK */
+    $('#deletep').each(function(){
+        $('this').click(function(event){
+            event.preventDefault();
+            $projet_id=$(this).parent('div').attr('id');
+            $projet_nom=$(this).prev('a').text();
+            alert($projet_id);
+            alert($projet_nom);
+
+            $.get({
+                url:'DelServlet',
+                datatype:'json',
+                data:{projet_id:$projet_id,projet_nom:$projet_nom},
+
+            })
+
+            $('#'+$projet_id).fadeToggle();
+            Materialize.toast($projet_nom+" supprimé !", 3000);
+
+        })
+    })
 
 </script>
+
 
