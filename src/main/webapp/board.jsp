@@ -50,10 +50,11 @@
 
 
         //Créer une clef
-        Key<Projet> parent = Key.create(Projet.class,nom_du_projet);
+
+        //Key<Projet> parent = Key.create(Projet.class,nom_du_projet);
         //Charger une entité par sa clef
+
         //Projet monProjet = ObjectifyService.ofy().load().key(parent).now();
-        Projet monProjet = ObjectifyService.ofy().load().key(parent).now();
         //Créer une clef
         //Key<Sprint> sprintKey = Key.create(Sprint.class,user.getUserId());
         //Charger une entité par sa clef
@@ -61,7 +62,6 @@
 
         int ucount=1;
         int tcount=1;
-
 
         String nbstorys_du_sprint = request.getParameter("sprint_nbstorys");
         if(nbstorys_du_sprint!=null){
@@ -96,19 +96,19 @@
                 </div>
             </div>
             <div class="collapsible-body">
-                <% /*List<UserStory> userStories = ObjectifyService.ofy()
+                <ul id="userstory_list">
+                <% List<UserStory> userStories = ObjectifyService.ofy()
                     .load()
                     .type(UserStory.class)
                     .filter("del",0)
-                    .ancestor("nom",sprint[s])
+                    /*.ancestor("nom",sprint[s])*/
                     .order("priorite")
                     .list();
-            for(UserStory userStory: userStories){*/
+            for(UserStory userStory: userStories){%>
+                <li>
 
-                    Integer u=0;
-                    for(u=1;u<=ucount;u++){%>
                 <div class="userstory" style="display: inline-block;border: solid 1px darkgrey;" >
-                    <h4>User Story n°<%=u%></h4>
+                    <h4>User Story n°<%= userStory.id %></h4>
                         <ul class="collapsible" data-collapsible="accordion">
                         <%/* List<Tache> taches = ObjectifyService.ofy()
                             .load()
@@ -152,9 +152,12 @@
                     </ul> <!-- FIN LISTE TACHES -->
                 </div>
 
-
+                </li>
                 <%}%>
-                <i id="adduserstory" class="material-icons md-dark md-inactive md-36 pointer vert">add</i>
+                </ul>
+                    <i id="newuserstory" class="material-icons md-dark md-inactive md-36 pointer vert">add</i>
+                    <i  id="adduserstory" class="material-icons md-dark md-inactive pointer bleu md-36 " style="display: none;">send</i>
+
 
         </li>
 
@@ -197,7 +200,6 @@ $('#newsprint').click(function(){
 /*Valider  input to span*/
 /*Enregistrer BDD via Servlet*/
 $('#addsprint').click(function(){
-    alert('coucou');
     event.preventDefault();
     $addsprint_nom=$('#addsprint_nom').val()
     $addsprint_valeur=$('#addsprint_valeur').val()
@@ -219,9 +221,44 @@ $('#addsprint').click(function(){
 });
 
 
-$('#adduserstory').click(function(){
-    alert("UserStory Ajouté ! ");
-})
+$('#newuserstory').click(function(){
+
+    $('#userstory_list')
+            .append($(' <div class="userstory" style="display: inline-block;border: solid 1px darkgrey;" >'+
+                    '<h4><input id="adduserstory_valeur" style="float: left;width: 25px;" placeholder="Valeur">User Story n°TEST : <input id="adduserstory_nom" type="text"></h4>'+
+                '<ul class="collapsible" data-collapsible="accordion"><li>'+
+                                '<div class="task collapsible-header"><h5 ><span id="task1" name="tache_nom" >Tâche n°</span>'+
+                        '<span class="switch"><label><input type="checkbox"><span class="lever"></span> </label> </span>'+
+                        '<span class="right"> <i class="material-icons md-dark md-inactive pointer bleu ">mode_edit</i> <i class="material-icons md-dark md-inactive pointer rouge">clear</i> </span>'+
+                        '</h5> </div> <div class="collapsible-body"> <div class="input-field col s12"> <textarea id="description" class="materialize-textarea" length="120"></textarea> <label for="description">Description</label> </div> <input type="date" class="datepicker"> <p>Temps estimé</p> </div>'+
+                            '</li></ul> </div>'));
+        $(this).css("display", "none");
+        $('#adduserstory').css("display","block");
+    });
+    /*Valider et Enregister un Sprint*/
+
+    $('#adduserstory').click(function(){
+        event.preventDefault();
+        $adduserstory_nom=$('#adduserstory_nom').val();
+        $adduserstory_valeur=$('#adduserstory_valeur').val();
+        $adduserstory_description=$('#adduserstory_description').val();
+        $adduserstory_etat=$('#adduserstory_etat').val();
+        $adduserstory_priorite=$('#adduserstory_priorite').val();
+
+        alert($adduserstory_valeur);
+        alert($adduserstory_nom);
+        $.get({
+            url:'AddServlet',
+            datatype:'json',
+            data:{adduserstory_nom:$adduserstory_nom,adduserstory_valeur:$adduserstory_valeur},
+
+        })
+
+        $(this).css("display", "none");
+        $('#newuserstory').css("display","block");
+        Materialize.toast($adduserstory_nom+" crée !", 3000);
+    });
+
 
 /*Ajouter une tâche*/
 $('#addtache').click(function(){
@@ -258,21 +295,6 @@ $tache_nom=$("#task1").text();
 
 })*/
 
-    /*Supprimer (Modifier del)*/
-
-
-/*
-$('#delete').click(function(event){
-    event.preventDefault();
-    $sprint_id=$("h3").attr('id');
-    console.log($sprint_id);
-    $.get({
-        url:'DelSServlet',
-        data:{sprint_id:$sprint_id},
-
-    })
-
-})*/
 </script>
 </body>
 </html>

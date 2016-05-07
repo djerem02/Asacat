@@ -20,7 +20,7 @@ public class UserStoryServlet extends HttpServlet {
         UserStory monUserStory= new UserStory();
         //attribut de la classe , name de la balise
         monUserStory.nom=request.getParameter("nom");
-        monUserStory.valeur= Integer.valueOf(request.getParameter("valeur"));
+        monUserStory.valeur= request.getParameter("valeur");
         monUserStory.description= request.getParameter("valeur");
         monUserStory.etat=request.getParameter("etat");
         monUserStory.priorite= Integer.valueOf(request.getParameter("priorite"));

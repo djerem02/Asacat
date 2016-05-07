@@ -20,7 +20,7 @@ public class UserStory {
     public String nom;
 
     @Index
-    public Integer valeur;
+    public String valeur;
 
     @Index
     public String description;
@@ -32,11 +32,9 @@ public class UserStory {
     public Integer priorite;
 
 
-
-
     public UserStory(){}
 
-    public UserStory(String nom,Integer valeur,String description,String etat,Integer priorite){
+    public UserStory(String nom,String valeur,String description,String etat,Integer priorite){
         this.nom=nom;
         this.valeur=valeur;
         this.description=description;
@@ -60,11 +58,11 @@ public class UserStory {
         this.id = id;
     }
 
-    public Integer getValeur() {
+    public String getValeur() {
         return valeur;
     }
 
-    public void setValeur(Integer valeur) {
+    public void setValeur(String valeur) {
         this.valeur = valeur;
     }
 

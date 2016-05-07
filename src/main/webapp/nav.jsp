@@ -7,7 +7,8 @@
 <%@ page import="com.googlecode.objectify.Key" %>
 <%@ page import="m1.projet3.Profil" %>
 <%@ page import="m1.projet3.Projet" %>
-<%@ page import="java.util.List" %><%--
+<%@ page import="java.util.List" %>
+<%@ page import="com.googlecode.objectify.LoadResult" %><%--
   Created by IntelliJ IDEA.
   User: Jérémy
   Date: 19/04/2016
@@ -24,6 +25,7 @@
     String projet_nom="projet_nom";
     String user_id=user.getUserId();
 
+
     //Récupération Profil
     Profil monProfil = ObjectifyService.ofy().load().type(Profil.class).id(user_id).now();
     String user_role=monProfil.role;
@@ -31,6 +33,7 @@
     String user_nom=monProfil.nom;
     String user_telephone=monProfil.phone;
     String user_email=monProfil.email;
+
 
     if (user != null) {
 
@@ -102,22 +105,24 @@
                         <div class="collapsible-body">
                             <ul id="projet_list">
                                 <% List<Projet> projets = ObjectifyService.ofy()
-                            .load()
-                            .type(Projet.class)
-                            .filter("del",0)
-                            .order("nom")
-                            .list();
+                                        .load()
+                                        .type(Projet.class)
+                                        /*.ancestor(monProfil)*/
+                                        .filter("del",0)
+                                        .order("nom")
+                                        .list();
                             for(Projet projet:projets){%>
                                 <li><div id="<%=projet.id%>">
                                         <a id="projet_nom" href="/board.jsp?projet_nom=<%=projet.nom%>">
                                             <%= projet.nom%>
                                         </a>
-                                        <a class="delprojet" id="deletep">
-                                            <i class=" tiny material-icons rouge">clear</i>
-                                        </a>
+
+                                        <i id="delprojet" class=" delprojet tiny material-icons rouge pointer">clear</i>
+
                                     </div>
                                 </li>
                                 <%}%>
+
 
                             </ul>
                             <i id="newprojet" class="material-icons md-dark md-inactive pointer">add_circle</i>
@@ -294,16 +299,6 @@
 
     });
 
-
-
-    /*Enregistrer le Profil*/
-    $profil_nom=$("#nom").val();
-    $profil_email=$("#email").text();
-    //$profil_prenom=$("#task1").text();
-    //$profil_phone=$("#").text();
-
-
-
     /*Créer un projet*/
     $('#newprojet').click(function(){
         $('#projet_list').append($('<input id="addprojet_nom">'));
@@ -314,7 +309,8 @@
     /*Valider  input to span*/
     /*Enregistrer BDD via Servlet*/
     $('#addprojet').click(function(){
-        alert('coucou');
+
+
         event.preventDefault();
         $addprojet_nom=$('#addprojet_nom').val()
 
@@ -333,8 +329,9 @@
     });
 
     /*Supprimer un projet OK */
-    $('#deletep').each(function(){
+    $('#delprojet').each(function(){
         $('this').click(function(event){
+            console.log("del");
             event.preventDefault();
             $projet_id=$(this).parent('div').attr('id');
             $projet_nom=$(this).prev('a').text();

@@ -34,6 +34,7 @@ public class ProfilServlet extends HttpServlet {
 
         //Charger si existe , sinon créer
         String user_id = request.getParameter("user_id");
+
         if (ObjectifyService.ofy().load().type(Profil.class).id(user_id).now()!= null) {
             System.out.println("profil chargé");
             Profil monProfil = ObjectifyService.ofy().load().type(Profil.class).id(user_id).now();
