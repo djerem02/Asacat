@@ -20,13 +20,13 @@ public class AddServlet extends HttpServlet {
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
-        
+
         if (request.getParameter("adduserstory_nom") != null){
             System.out.println("us:"+request.getParameter("adduserstory_nom"));
             UserStory monAddUserStory= new UserStory();
             monAddUserStory.nom=request.getParameter("adduserstory_nom");
             monAddUserStory.valeur =request.getParameter("adduserstory_valeur");
-            //monAddUserStory.description= request.getParameter("valeur");
+            monAddUserStory.del = 0;
             //monAddUserStory.etat=request.getParameter("etat");
            // monAddUserStory.priorite= Integer.valueOf(request.getParameter("priorite"));
             ObjectifyService.ofy().save().entities(monAddUserStory).now();

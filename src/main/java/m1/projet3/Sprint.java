@@ -12,9 +12,6 @@ import com.googlecode.objectify.annotation.*;
 @Cache
 public class Sprint {
 
-    @Parent
-    Key<Projet> parent;
-
     @Id
     public Long id;
 
@@ -36,8 +33,7 @@ public class Sprint {
     public Sprint(){}
 
 
-    public Sprint(Key<Projet> parent,String nom,String valeur,String etat,Integer del,String userstory){
-        this.parent=parent;
+    public Sprint(String nom,String valeur,String etat,Integer del,String userstory){
         this.nom=nom;
         this.valeur=valeur;
         this.etat=etat;

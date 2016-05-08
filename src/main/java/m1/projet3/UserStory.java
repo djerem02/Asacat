@@ -31,15 +31,19 @@ public class UserStory {
     @Index
     public Integer priorite;
 
+    @Index
+    public Integer del;
+
 
     public UserStory(){}
 
-    public UserStory(String nom,String valeur,String description,String etat,Integer priorite){
+    public UserStory(String nom,String valeur,String description,String etat,Integer priorite,Integer del){
         this.nom=nom;
         this.valeur=valeur;
         this.description=description;
         this.etat=etat;
         this.priorite=priorite;
+        this.del=del;
     }
 
     public String getNom() {
@@ -89,4 +93,8 @@ public class UserStory {
     public void setEtat(String etat) {
         this.etat = etat;
     }
+
+    public Integer getDel() {return del;}
+
+    public void setDel(Integer del) {this.del = del;}
 }

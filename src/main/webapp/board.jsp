@@ -87,10 +87,10 @@
             for(s=1;s<=scount;s++){*/
 
         %>
-        <li >
+        <li id="item-<%= sprint.id%>" >
             <div class="collapsible-header">
                 <i class="material-icons">place</i>
-                <h3 id="<%= sprint.id%>">Sprint n°<%= sprint.id%>: <%= sprint.nom%><span style="float: left;"><%= sprint.valeur%></span><a id="delete"><i class=" tiny material-icons md-dark md-inactive right rouge" >clear</i></a></h3>
+                <h3 id="<%= sprint.id%>"><span style="float: left;"><%= sprint.valeur%></span>Sprint n°<%= sprint.id%>: <span><%= sprint.nom%></span><i id="id<%=sprint.id%>" class="delsprint tiny material-icons md-dark md-inactive right rouge" >clear</i></a></h3>
                 <div class="progress">
                     <div class="determinate" style="width:<%= progression %>%"></div> // nombre taches done/nombre total de taches(nombre de tachesn ayant l'id ancetre et etat done/nolbres de taches yaant l'ancetre)
                 </div>
@@ -101,7 +101,6 @@
                     .load()
                     .type(UserStory.class)
                     .filter("del",0)
-                    /*.ancestor("nom",sprint[s])*/
                     .order("priorite")
                     .list();
             for(UserStory userStory: userStories){%>
@@ -295,6 +294,25 @@ $tache_nom=$("#task1").text();
 
 })*/
 
+/*Supprimer un sprint */
+ $(".delsprint").click(function(event){
+
+        event.preventDefault();
+        $sprint_id = $(this).parent('h3').attr('id');
+        $sprint_nom = $(this).prev('span').text();
+        alert($sprint_id);
+        alert($sprint_nom);
+
+        $.get({
+            url: 'DelServlet',
+            datatype: 'json',
+            data: {sprint_id: $sprint_id, sprint_nom: $sprint_nom},
+
+        })
+
+        $('#item-' + $sprint_id).fadeToggle();
+        Materialize.toast($sprint_nom + " supprimé !", 3000);
+})
 </script>
 </body>
 </html>

@@ -36,9 +36,12 @@ public class Tache {
     @Index
     public String temps_dev;
 
+    @Index
+    public Integer del;
+
     public Tache(){}
 
-    public Tache(String nom,Integer valeur,String description,String etat,Integer priorite,String temps_estim,String temps_dev){
+    public Tache(String nom,Integer valeur,String description,String etat,Integer priorite,String temps_estim,String temps_dev,Integer del){
         this.nom=nom;
         this.valeur=valeur;
         this.description=description;
@@ -46,6 +49,7 @@ public class Tache {
         this.priorite=priorite;
         this.temps_estim=temps_estim;
         this.temps_dev=temps_dev;
+        this.del=del;
 
     }
 
@@ -113,4 +117,11 @@ public class Tache {
         this.temps_dev = temps_dev;
     }
 
+    public Integer getDel() {
+        return del;
+    }
+
+    public void setDel(Integer del) {
+        this.del = del;
+    }
 }

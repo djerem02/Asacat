@@ -123,7 +123,6 @@
                                 </li>
                                 <%}%>
 
-
                             </ul>
                             <i id="newprojet" class="material-icons md-dark md-inactive pointer">add_circle</i>
                             <i  id="addprojet" class="material-icons md-dark md-inactive pointer bleu md-24 pointer" style="display: none;">send</i>
@@ -329,8 +328,7 @@
     });
 
     /*Supprimer un projet OK */
-    $('#delprojet').each(function(){
-        $('this').click(function(event){
+        $('.delprojet').click(function(event){
             console.log("del");
             event.preventDefault();
             $projet_id=$(this).parent('div').attr('id');
@@ -349,7 +347,6 @@
             Materialize.toast($projet_nom+" supprimé !", 3000);
 
         })
-    })
 
 </script>
 
