@@ -1,4 +1,4 @@
-        <%@ page import="com.google.appengine.api.users.UserServiceFactory" %>
+<%@ page import="com.google.appengine.api.users.UserServiceFactory" %>
 <%@ page import="com.google.appengine.api.users.UserService" %>
 <%@ page import="com.googlecode.objectify.ObjectifyService" %>
 
@@ -35,26 +35,13 @@
     <script src="../js/jquery-2.2.2.js"></script>
     <script src="../js/bootstrap.min.js"></script>
     <script src="../js/materialize.min.js"></script>
-    <script src="../js/profile.js"></script>
-
-    <style>
-        /*header, main, footer {
-            padding-left: 240px;
-        }
-
-        @media only screen and (max-width : 992px) {
-            header, main, footer {
-                padding-left: 0;
-            }
-        }*/
 
 
-    </style>
+
 </head>
 <body>
+
 <%@include file="nav.jsp" %>
-
-
 
 <!--AFFICHE HORS CONNEXION-->
 <%
@@ -64,16 +51,21 @@
 
 %>
 <center>
-    <h2>Hello <del>World</del> Asacat !</h2>
     <h3>Bienvenue sur la plateforme de gestion de projet agile Asacat </h3>
-    <p>Asacat permet la gestion de votre projet de manière agile.Devenez aussi agile qu'un chat !</p>
+    <p>Asacat permet la gestion de votre projet de manière agile.</p>
+    <p style="font-size: 36px;"> Devenez aussi agile qu'un chat !<p>
 </center>
 <%
 
     /* SI 1ere Connexion*/
-    if (connexion==0 && user!= null){%>
+
+    if (connexion==0 && user!= null){
+        String user_id=user.getUserId();
+    %>
+
 <center>
     <form action="SprintServlet" method="get">
+        <input type="hidden" name="parentprofil" value="<%= user_id%>">
         <input type="text" name="projet_nom" placeholder="Nom du Projet">
         <h4>Ce n'est peut-être pas le Sprint final , mais vous devez lui accorder toute son importance:</h4>
         <h5>Sprint n°1:</h5>
@@ -136,21 +128,7 @@
 
 <script>
 
-/*
-    function getProfil(){
-        var user_nom=jQuery('#nom').val();
-        jQuery.ajax({
-            type:'GET',
-            url: '/ProfilServlet',
-            data:{
-                nom:user_nom
-            },
-            success: function (result) {
-                jQuery
 
-            }
-        })
-    }*/
 </script>
 </body>
 </html>

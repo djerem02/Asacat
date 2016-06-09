@@ -22,20 +22,23 @@ public class SprintServlet extends HttpServlet {
         DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
 
         Projet monProjet = new Projet();
+        String parentprofil=request.getParameter("parentprofil");
+        System.out.print("parentprofil: "+parentprofil);
         monProjet.nom=request.getParameter("projet_nom");
+        monProjet.parentprofil=parentprofil;
         monProjet.del=0;
-        ObjectifyService.ofy().save().entities(monProjet).now();
+        //ObjectifyService.ofy().save().entities(monProjet).now();
 
         Sprint monSprint= new Sprint();
         monSprint.nom=request.getParameter("sprint_nom");
         monSprint.valeur=request.getParameter("sprint_valeur");
         monSprint.etat=request.getParameter("etat");
-        monSprint.userstory=request.getParameter("sprint_nbstorys");
         monSprint.del=0;
         monSprint.etat="A faire";
-        ObjectifyService.ofy().save().entities(monSprint).now();
+        //ObjectifyService.ofy().save().entities(monSprint).now();
 
         this.getServletContext().getRequestDispatcher("/board.jsp").forward(request,response);
         // OU response.sendRedirect("board.jsp");
+
     }
 }
