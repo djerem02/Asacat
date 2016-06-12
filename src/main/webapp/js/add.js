@@ -37,8 +37,8 @@ $('#addprojet').click(function(){
 
 /** SPRINT **/
 $('#newsprint').click(function(){
-    $addsprint_form='<li id="addsprint_form"><div class="collapsible-header">' +
-        '<i class="material-icons">place</i> <h3>Sprint: <input id="addsprint_nom"type="texte" style="width: 6em;" placeholder="Nom"><input id="addsprint_valeur" style="float: left;width: 45px;" placeholder="Valeur"><a id="delete"><i class=" tiny material-icons md-dark md-inactive right rouge" >clear</i></a>' +
+   var $addsprint_form='<li id="addsprint_form"><div class="collapsible-header">' +
+        '<i class="material-icons">place</i> <h3>Sprint: <input id="addsprint_nom" style="width: 6em;" placeholder="Nom"><input id="addsprint_valeur" style="float: left;width: 45px;" placeholder="Valeur"><a id="delete"><i class=" tiny material-icons md-dark md-inactive right rouge" >clear</i></a>' +
             //'<div class="progress"> <div class="determinate" style="width:0%"></div></div>' +
         '</h3>'+
         '</div>' +
@@ -50,7 +50,7 @@ $('#newsprint').click(function(){
         '</span><span class="right"> <i class="material-icons md-dark md-inactive pointer bleu ">mode_edit</i> <i class="material-icons md-dark md-inactive pointer rouge">clear</i> </span>'+
         '</h5></div>'+
         '<div class="collapsible-body"> <div class="input-field col s12"> <textarea id="description" class="materialize-textarea" length="120"></textarea> <label for="description">Description</label> </div> <input type="date" class="datepicker"> <p>Temps estimé</p> </div> </li>'+
-        '</div></li>-->';
+        '</div>--></li>';
     $('#sprint_list').append($addsprint_form);
     $(this).css("display", "none");
     $('#addsprint').css("display","block");
@@ -88,20 +88,17 @@ $('#addsprint').click(function(){
 /** USERSTORY**/
 
 $('.newuserstory').click(function(){
+    var $adduserstory_form='<li id="adduserstory_form"><div class="userstory collapsible-header clear" style="border: solid 1px darkgrey;" >'+
+        '<h4>User Story :'+
+        '<input id="adduserstory_nom" ><input id="adduserstory_valeur" style="float: left;width: 50px;" placeholder="Valeur"></h4>'+
+        '</div></li>';
 
-    $('.userstory_list')
-        .append($(' <div class="userstory clear" style="display:block;border: solid 1px darkgrey;" >'+
-            '<h4><input id="adduserstory_valeur" style="float: left;width: 50px;" placeholder="Valeur">User Story : <input id="adduserstory_nom" type="text"></h4>'+
-            '<ul class="collapsible" data-collapsible="accordion"><li>'+
-            '<div class="task collapsible-header"><h5 ><span id="task1" name="tache_nom" >Tâche n°</span>'+
-            '<span class="switch"><label><input type="checkbox"><span class="lever"></span> </label> </span>'+
-            '<span class="right"> <i class="material-icons md-dark md-inactive pointer bleu ">mode_edit</i> <i class="material-icons md-dark md-inactive pointer rouge">clear</i> </span>'+
-            '</h5> </div> <div class="collapsible-body"> <div class="input-field col s12"> <textarea id="description" class="materialize-textarea" length="120"></textarea> <label for="description">Description</label> </div> <input type="date" class="datepicker"> <p>Temps estimé</p> </div>'+
-            '</li></ul> </div>'));
-    $('.newuserstory').css("display", "none");
+    $('.userstory_list').parent().append($adduserstory_form);
+    $(this).css("display", "none");
     $('.adduserstory').css("display","block");
-});
-/*Valider et Enregister un Sprint*/
+})
+
+/*Valider et Enregister un US*/
 
 $('.adduserstory').click(function(){
     event.preventDefault();
@@ -113,14 +110,23 @@ $('.adduserstory').click(function(){
 
     $parentsprint=$('.item-S').attr('id');
 
-    alert($parentsprint);
     alert($adduserstory_nom);
+    alert($adduserstory_valeur);
     $.get({
         url:'AddServlet',
         datatype:'json',
         data:{adduserstory_nom:$adduserstory_nom,adduserstory_valeur:$adduserstory_valeur,parentsprint:$parentsprint},
 
     })
+
+    $('#adduserstory_form').css("display","none");
+
+    $('#userstory_list').append($(
+        "<li id='userStory.id' class='item-US' style='display: inline-block;'>"+
+        "<div class='userstory ' style='display: inline-block;border: solid 1px darkgrey;' >"+
+        "<h4><span class='left'>"+$adduserstory_valeur+"</span>"+
+        " User Story:"+$adduserstory_nom+"<i  class='delsprint tiny material-icons md-dark md-inactive right rouge' >clear</i>"+
+        "</h4></div></li>")).fadeIn();
 
     $('.adduserstory').css("display", "none");
     $('.newuserstory').css("display","block");
@@ -129,12 +135,12 @@ $('.adduserstory').click(function(){
 
 /**TACHE**/
 $('.newtache').click(function(){
+    var $addtache_form='<li id="addtache_form"><div class="task collapsible-header">'+
+        '<h5 ><span  >Tâche:<input id="addtache_nom" ></span>'+
+        '</h5></div></li>';
 
-    $('.tache_list')
-        .append($('<li><div class="task collapsible-header">'+
-            '<h5 ><span  >Tâche:<input id="addtache_nom" ></span>'+
-            '</h5> </div> <div class="collapsible-body"> <div class="input-field col s12"> <textarea id="description" class="materialize-textarea" length="120"></textarea> <label for="description">Description</label> </div> <input type="date" class="datepicker"> <p>Temps estimé</p> </div></li>'));
-    $('.newtache').css("display", "none");
+    $(this).closest('li').children().children().last().append($addtache_form);
+    $(this).css("display", "none");
     $('.addtache').css("display","block");
 });
 /*Valider et Enregister un Sprint*/
@@ -144,8 +150,6 @@ $('.addtache').click(function(){
     $parentuserstory=$('.item-US').attr('id');
 
     $addtache_nom=$('#addtache_nom').val();
-    $('addtache_nom').append($('<span>'+$addtache_nom+'</span>'));
-    $('addtache_nom').hide();
     alert($addtache_nom);
     alert($parentuserstory);
     $.get({
@@ -154,7 +158,11 @@ $('.addtache').click(function(){
         data:{addtache_nom:$addtache_nom,parentuserstory:$parentuserstory},
 
     })
-
+    //$('#addtache_form').after($("<span>"+$addtache_nom+"</span>")).css('display','none');
+    $('#addtache_form').css("display","none");
+    $(this).before($('<li><div class="task collapsible-header">'+
+        '<h5 ><span  >Tâche:'+$addtache_nom+'</span>'+
+        '</h5></div></li>')).fadeIn();
     $('.addtache').css("display", "none");
     $('.newtache').css("display","block");
     Materialize.toast($addtache_nom+" crée !", 3000);

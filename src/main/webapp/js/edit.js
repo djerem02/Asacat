@@ -150,3 +150,86 @@ $(".editsprint").click(function(event){
 })
 
 
+/*Modifier une tâche */
+//var newrole_val = "";
+
+$(".edittache").on("click", function(e){
+    e.preventDefault();
+    //var datarole = $(("#datarole"));
+    var datavaleurtache = $(("#datavaleurtache"));
+    var datanomtache = $(("#datanomtache"));
+
+    var valeurtache_id   = datavaleurtache.attr("id");
+    var newvaleurtache_id   = valeurtache_id+"-form";
+    var nomtache_id   = datanomtache.attr("id");
+    var newnomtache_id   = nomtache_id+"-form";
+
+
+    var valeurtache_val = datavaleurtache.text();
+    var nomtache_val = datanomtache.text();
+
+
+    datavaleurtache.empty();
+    datanomtache.empty();
+
+
+
+
+    $('<input type="text" name="'+newvaleurtache_id+'" id="'+newvaleurtache_id+'" value="'+valeurtache_val+'" class="hlite">').appendTo(datavaleurtache);
+    $('<input type="text" name="'+newnomtache_id+'" id="'+newnomtache_id+'" value="'+nomtache_val+'" class="hlite">').appendTo(datanomtache);
+    $(this).css("display", "none");
+    $('.savetache').css("display","block");
+});
+/*Valider & Sauvegarder*/
+$(".savetache").on("click", function(e){
+    e.preventDefault();
+
+    $tache_id = $(this).closest('h4').attr("id");
+
+    var datavaleurtache = $(("#datavaleurtache"));
+
+    var datanomtache = $(("#datanomtache"));
+
+
+
+    var newvaleurtache_id   = datavaleurtache.attr("id");
+    var newnomtache_id   = datanomtache.attr("id");
+
+    var valeurtache_input  = "#"+newvaleurtache_id+"-form";
+    var nomtache_input  = "#"+newnomtache_id+"-form";
+
+
+    var newvaleurtache_input  = $(valeurtache_input);
+    var newnomtache_input  = $(nomtache_input);
+
+    var newvaleurtache_val  = newvaleurtache_input.val();
+    var newnomtache_val  = newnomtache_input.val();
+
+    newvaleurtache_input.remove();
+    newnomtache_input.remove();
+
+    datavaleurtache.html(newvaleurtache_val);
+    datanomtache.html(newnomtache_val);
+
+
+    $(this).css("display", "none");
+    $('.edittache').css("display","block");
+    alert($tache_id);
+    alert(newnomtache_val);
+    alert(newvaleurtache_val);
+    /*Enregistrer la tache*/
+    $.get({
+        url:'EditServlet',
+        datatype:'json',
+        data:{tache_id:$tache_id,tache_valeur:newvaleurtache_val,tache_nom:newnomtache_val},
+
+    }).fail(function() {
+        alert('woops');
+    });
+    $('#tache_nom').text(newnomtache_val);
+    Materialize.toast(newnomtache_val+ " modifié !", 3000);
+
+});
+
+
+

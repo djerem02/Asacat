@@ -19,7 +19,7 @@ public class Tache {
     public String nom;
 
     @Index
-    public Integer valeur;
+    public String valeur;
 
     @Index
     public String description;
@@ -27,21 +27,24 @@ public class Tache {
     @Index
     public String etat;
 
-    @Index
+
     public Integer priorite;
 
-    @Index
+
     public String temps_estim;
 
-    @Index
+
     public String temps_dev;
 
     @Index
     public Integer del;
 
+    @Index
+    public String parentuserstory;
+
     public Tache(){}
 
-    public Tache(String nom,Integer valeur,String description,String etat,Integer priorite,String temps_estim,String temps_dev,Integer del){
+    public Tache(String nom,String valeur,String description,String etat,Integer priorite,String temps_estim,String temps_dev,Integer del,String parentuserstory){
         this.nom=nom;
         this.valeur=valeur;
         this.description=description;
@@ -50,6 +53,7 @@ public class Tache {
         this.temps_estim=temps_estim;
         this.temps_dev=temps_dev;
         this.del=del;
+        this.parentuserstory=parentuserstory;
 
     }
 
@@ -69,11 +73,11 @@ public class Tache {
         this.nom = nom;
     }
 
-    public Integer getValeur() {
+    public String getValeur() {
         return valeur;
     }
 
-    public void setValeur(Integer valeur) {
+    public void setValeur(String valeur) {
         this.valeur = valeur;
     }
 
@@ -123,5 +127,13 @@ public class Tache {
 
     public void setDel(Integer del) {
         this.del = del;
+    }
+
+    public String getParentuserstory() {
+        return parentuserstory;
+    }
+
+    public void setParentuserstory(String parentuserstory) {
+        this.parentuserstory = parentuserstory;
     }
 }

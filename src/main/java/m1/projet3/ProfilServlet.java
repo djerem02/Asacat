@@ -34,12 +34,10 @@ public class ProfilServlet extends HttpServlet {
 
         //Charger si existe , sinon créer
         String user_id = request.getParameter("user_id");
-
-        if (ObjectifyService.ofy().load().type(Profil.class).id(user_id).now()!= null) {
-            System.out.println("profil chargé");
-            Profil monProfil = ObjectifyService.ofy().load().type(Profil.class).id(user_id).now();
-            System.out.println("profil" + user_id );
-            monProfil.id = user_id;
+        Profil monProfil = ObjectifyService.ofy().load().type(Profil.class).id(user_id).now();
+        System.out.print(monProfil);
+        if (monProfil != null) {
+            System.out.println("profil chargé : " + user_id );
             monProfil.prenom =request.getParameter("profil_prenom");
             monProfil.nom = request.getParameter("profil_nom");
             monProfil.role=request.getParameter("profil_role");
@@ -48,8 +46,8 @@ public class ProfilServlet extends HttpServlet {
             ObjectifyService.ofy().save().entities(monProfil).now();
         }else{
             System.out.println(" profil crée");
-            Profil monProfil = new Profil();
-            System.out.println("profil" + user_id);
+            monProfil = new Profil();
+            System.out.println(" nouveau profil" + user_id);
             monProfil.id = user_id;
             monProfil.prenom =request.getParameter("profil_prenom");
             monProfil.nom = request.getParameter("profil_nom");

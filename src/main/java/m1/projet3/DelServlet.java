@@ -23,18 +23,28 @@ public class DelServlet extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
         System.out.println("DELSERVLET");
-        System.out.println("delsp:"+request.getParameter("sprint_id"));
-        if (request.getParameter("userstory_id") != null){
+
+        if(request.getParameter("tache_id") != null){
+            System.out.println("DELtache");
+            System.out.println("delt:"+request.getParameter("tache_id"));
+            Long tache_id=Long.valueOf(request.getParameter("tache_id"));
+            Tache maDelTache = ObjectifyService.ofy().load().type(Tache.class).id(tache_id).now();
+            maDelTache.nom=request.getParameter("tache_nom");
+            maDelTache.del=1;
+            ObjectifyService.ofy().save().entities(maDelTache).now();
+        }
+        else if ( request.getParameter("tache_id")== null && request.getParameter("userstory_id") != null){
             System.out.println("delus:"+request.getParameter("userstory_id"));
-            Long userstory_id=Long.parseLong(request.getParameter("userstory_id"));
+            Long userstory_id=Long.valueOf(request.getParameter("userstory_id"));
             UserStory monDelUserStory = ObjectifyService.ofy().load().type(UserStory.class).id(userstory_id).now();
-            monDelUserStory.nom=request.getParameter("projet_nom");
+            monDelUserStory.nom=request.getParameter("userstory_nom");
             monDelUserStory.del=1;
             ObjectifyService.ofy().save().entities(monDelUserStory).now();
 
         }else if (request.getParameter("userstory_id")== null && request.getParameter("sprint_id")!=null){
-            System.out.println("delsp:"+request.getParameter("sprint_nom"));
+            System.out.println("delsp:"+request.getParameter("sprint_id"));
             Long sprint_id=Long.parseLong(request.getParameter("sprint_id"));
+            System.out.println("delsp:"+request.getParameter("sprint_nom")+sprint_id);
             Sprint monDelSprint = ObjectifyService.ofy().load().type(Sprint.class).id(sprint_id).now();
             monDelSprint.nom=request.getParameter("sprint_nom");
             monDelSprint.del=1;
@@ -47,7 +57,6 @@ public class DelServlet extends HttpServlet {
             System.out.println("delpr: "+projet_id);
             System.out.println(request.getParameter("projet_nom"));
             Projet monDelProjet = ObjectifyService.ofy().load().type(Projet.class).id(projet_id).now();
-
             monDelProjet.nom=request.getParameter("projet_nom");
             monDelProjet.del=1;
 

@@ -4,6 +4,8 @@ import com.google.appengine.repackaged.com.google.common.base.Flag;
 import com.googlecode.objectify.Key;
 import com.googlecode.objectify.annotation.*;
 
+import java.util.Date;
+
 /**
  * Created by Jérémy on 06/04/2016.
  */
@@ -13,7 +15,7 @@ import com.googlecode.objectify.annotation.*;
 public class Sprint {
 
     @Id
-    public Long id;
+    public Long id_sprint;
 
 
     public String valeur;
@@ -24,8 +26,11 @@ public class Sprint {
     @Index
     public String nom;
 
+    @Index
+    public Date creadate;
 
-    public String userstory;
+    @Index
+    public String parentprojet;
 
     @Index
     public Integer del;
@@ -33,26 +38,25 @@ public class Sprint {
     public Sprint(){}
 
 
-    public Sprint(String nom,String valeur,String etat,Integer del,String userstory){
+    public Sprint(String nom,String valeur,String etat,Integer del,Date creadate,String parentprojet){
         this.nom=nom;
         this.valeur=valeur;
         this.etat=etat;
+        this.creadate=creadate;
         this.del=del;
-        this.userstory=userstory;
+        this.parentprojet=parentprojet;
     }
 
     public Long getId() {
-        return id;
+        return id_sprint;
     }
-
     public void setId(Long id) {
-        this.id = id;
+        this.id_sprint = id;
     }
 
     public String getValeur() {
         return valeur;
     }
-
     public void setValeur(String valeur) {
         this.valeur = valeur;
     }
@@ -60,7 +64,6 @@ public class Sprint {
     public String getEtat() {
         return etat;
     }
-
     public void setEtat(String etat) {
         this.etat = etat;
     }
@@ -68,20 +71,20 @@ public class Sprint {
     public String getNom() {
         return nom;
     }
-
     public void setNom(String nom) {
         this.nom = nom;
     }
 
-    public Integer getDel() {return del;}
+    public Date getCreadate() {return creadate;}
+    public void setCreadate(Date creadate) {this.creadate = creadate;}
 
+    public Integer getDel() {return del;}
     public void setDel(Integer del) {this.del = del;}
 
-    public String getUserstory() {
-        return userstory;
+    public String getParentprojet() {
+        return parentprojet;
     }
-
-    public void setUserstory(String userstory) {
-        this.userstory = userstory;
+    public void setParentprojet(String parentprojet) {
+        this.parentprojet = parentprojet;
     }
 }

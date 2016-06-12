@@ -1,4 +1,4 @@
-<%--
+<%@ page import="com.googlecode.objectify.Objectify" %><%--
   Created by IntelliJ IDEA.
   User: Jérémy
   Date: 30/04/2016
@@ -26,20 +26,26 @@
 <%@include file="nav.jsp" %>
 
 <center>
-    <h1>Projets Supprimés</h1>
+    <h1>Projets Archivés</h1>
     <ul>
         <%
             List<Projet> projets = ObjectifyService.ofy()
                     .load()
                     .type(Projet.class)
                     .filter("del",1)
-                    .order("nom")
+                    .filter("parentprofil >", null)
+                    .order("parentprofil")
                     .list();
             for(Projet projet :projets){
         %>
-                <li><h3><%=projet.nom%><i class=" material-icons md-48 md-dark md-inactive right jaune" >restore_page</i></h3></li>
+                <li><h3><%=projet.nom%>
+                    <i class=" material-icons md-48 md-dark md-inactive right rouge" >delete</i>
+                    <i class=" material-icons md-48 md-dark md-inactive right jaune" >restore_page</i>
+                </h3></li>
         <%}%>
+
     </ul>
+
 </center>
 
 </body>

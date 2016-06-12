@@ -4,7 +4,22 @@
 .left{
     float:left;
 }
+.clear{
+    clear: both;
+}
+span{
+    margin: 5px 5px 0 5px;
+}
 
+.modal-header{
+    height: 20%;
+}
+.modal-content{
+    height:70%;
+}
+.modal-footer{
+    height: 10%;
+}
 
 .savebtn { position: absolute; cursor: pointer;display: none;
 }

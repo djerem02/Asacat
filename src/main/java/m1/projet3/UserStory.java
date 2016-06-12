@@ -1,9 +1,7 @@
 package m1.projet3;
 
-import com.googlecode.objectify.annotation.Cache;
-import com.googlecode.objectify.annotation.Entity;
-import com.googlecode.objectify.annotation.Id;
-import com.googlecode.objectify.annotation.Index;
+import com.googlecode.objectify.Key;
+import com.googlecode.objectify.annotation.*;
 
 /**
  * Created by Jérémy on 08/04/2016.
@@ -12,6 +10,9 @@ import com.googlecode.objectify.annotation.Index;
 @Entity
 @Cache
 public class UserStory {
+
+    @Parent
+    Key<Sprint> theSprint;
 
     @Id
     public Long id;
@@ -23,27 +24,39 @@ public class UserStory {
     public String valeur;
 
     @Index
+    public Integer del;
+
     public String description;
 
-    @Index
+
     public String etat;
 
-    @Index
+
     public Integer priorite;
 
     @Index
-    public Integer del;
+    public String parentsprint;
+
 
 
     public UserStory(){}
-
-    public UserStory(String nom,String valeur,String description,String etat,Integer priorite,Integer del){
+    public UserStory(String id_sprint, String nom) {
+        this();
+        if ( id_sprint != null ) {
+            theSprint = Key.create(Sprint.class, id_sprint);  // Creating the Ancestor key
+        } else {
+            theSprint = Key.create(Sprint.class, "default");
+        }
+        this.nom = nom;
+    }
+    public UserStory(String nom,String valeur,String description,String etat,Integer priorite,Integer del,String parentsprint){
         this.nom=nom;
         this.valeur=valeur;
         this.description=description;
         this.etat=etat;
         this.priorite=priorite;
         this.del=del;
+        this.parentsprint=parentsprint;
     }
 
     public String getNom() {
@@ -97,4 +110,12 @@ public class UserStory {
     public Integer getDel() {return del;}
 
     public void setDel(Integer del) {this.del = del;}
+
+    public String getParentsprint() {
+        return parentsprint;
+    }
+
+    public void setParentsprint(String parentsprint) {
+        this.parentsprint = parentsprint;
+    }
 }

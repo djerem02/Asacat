@@ -10,6 +10,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.Date;
 
 /**
  * Created by Jérémy on 03/05/2016.
@@ -32,7 +33,7 @@ public class AddServlet extends HttpServlet {
             monAddTache.del = 0;
             //monAddUserStory.etat=request.getParameter("etat");
             // monAddUserStory.priorite= Integer.valueOf(request.getParameter("priorite"));
-            ObjectifyService.ofy().save().entities(monAddTache).now();
+            //ObjectifyService.ofy().save().entities(monAddTache).now();
 
         /*AddUS*/
         }else if (request.getParameter("addtache_nom")==null && request.getParameter("adduserstory_nom") != null){
@@ -43,7 +44,7 @@ public class AddServlet extends HttpServlet {
             monAddUserStory.del = 0;
             monAddUserStory.parentsprint=request.getParameter("parentsprint");
             //monAddUserStory.etat=request.getParameter("etat");
-           // monAddUserStory.priorite= Integer.valueOf(request.getParameter("priorite"));
+            //monAddUserStory.priorite= Integer.valueOf(request.getParameter("priorite"));
             ObjectifyService.ofy().save().entities(monAddUserStory).now();
         }else if (request.getParameter("addtache_nom")==null && request.getParameter("adduserstory_nom")== null && request.getParameter("addsprint_nom")!= null){
             System.out.println("sprint: "+ request.getParameter("addsprint_nom")+request.getParameter("parentprojet"));
@@ -51,10 +52,12 @@ public class AddServlet extends HttpServlet {
              monAddSprint.nom = request.getParameter("addsprint_nom");
              monAddSprint.valeur = request.getParameter("addsprint_valeur");
              //monAddSprint.userstory=request.getParameter("addsprint_nbstorys");
+             monAddSprint.creadate = new Date();
+             System.out.print(monAddSprint.creadate);
              monAddSprint.del = 0;
              monAddSprint.parentprojet=request.getParameter("parentprojet");
              monAddSprint.etat = "À faire";
-             ObjectifyService.ofy().save().entities(monAddSprint).now();
+             //ObjectifyService.ofy().save().entities(monAddSprint).now();
 
         }else if(request.getParameter("addtache_nom")==null && request.getParameter("adduserstory_nom")== null
                 && request.getParameter("addsprint_nom")== null && request.getParameter("addprojet_nom")!=null){

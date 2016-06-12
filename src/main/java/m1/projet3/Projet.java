@@ -18,13 +18,16 @@ public class Projet {
     public String nom;
 
     @Index
+    public String parentprofil;
+    @Index
     public Integer del;
 
     public Projet(){}
 
-    public Projet(Long idp, String nom,Integer del) {
+    public Projet(Long idp, String nom,String parentprofil,Integer del) {
         this.id = idp;
         this.nom = nom;
+        this.parentprofil = parentprofil;
         this.del= del;
     }
 
@@ -42,6 +45,15 @@ public class Projet {
 
     public void setNom(String nom) {
         this.nom = nom;
+    }
+
+
+    public String getParentprofil() {
+        return parentprofil;
+    }
+
+    public void setParentprofil(String parentprofil) {
+        this.parentprofil = parentprofil;
     }
 
     public Integer getDel() {return del;}

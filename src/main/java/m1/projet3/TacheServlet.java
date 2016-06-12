@@ -24,6 +24,9 @@ public class TacheServlet extends HttpServlet {
         Tache maTache = new Tache();
 
         maTache.nom=request.getParameter("tache_nom");
+        maTache.nom=request.getParameter("tache_priorite");
+        maTache.del=0;
+
 
         ObjectifyService.ofy().save().entities(maTache).now();
     }
